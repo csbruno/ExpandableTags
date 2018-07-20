@@ -13,8 +13,9 @@ import br.com.brunocs.expandabletags.Tag;
 
 public class MainActivity extends AppCompatActivity {
 
-    ExpandableTags expandableTags;
-    Button button;
+    private ExpandableTags expandableTags;
+    private Button button;
+    private Button collapse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,12 +23,19 @@ public class MainActivity extends AppCompatActivity {
 
         expandableTags = (ExpandableTags) findViewById(R.id.expandable_tag);
         button = (Button) findViewById(R.id.button);
+        collapse = (Button) findViewById(R.id.collapse);
 
         expandableTags.addTag(new Tag("Price","'Description"));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 expandableTags.addTag(new Tag(randomString((new Random()).nextInt(10)),"desc"));
+            }
+        });
+        collapse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandableTags.animateCollapse();
             }
         });
 

@@ -18,15 +18,26 @@ public class TagLayout {
     private int borderColor;
     private int borderSize;
     private boolean hasBorder;
-    private boolean allowCollapse;
+
     private boolean allowOverlap;
     private boolean allowFill;
+    private boolean allowResize;
 
     public TagLayout() {
         hasBorder = true;
-        allowCollapse = true;
         allowOverlap = true;
     }
+    public boolean isCollapsed() {
+        return isCollapsed;
+    }
+
+    public void setCollapsed(boolean collapsed) {
+        isCollapsed = collapsed;
+    }
+
+    private boolean isCollapsed = false;
+
+
 
     public void loadAttrs(AttributeSet attributeSet, Context context) {
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.ExpandableTags, 0, 0);
@@ -55,9 +66,10 @@ public class TagLayout {
             borderColor = attr.getColor(R.styleable.ExpandableTags_borderColor, Color.BLACK);
             borderSize = attr.getDimensionPixelSize(R.styleable.ExpandableTags_borderSize, 3);
             hasBorder = attr.getBoolean(R.styleable.ExpandableTags_hasBorder, true);
-            allowCollapse = attr.getBoolean(R.styleable.ExpandableTags_allowCollapse, true);
+
             allowOverlap = attr.getBoolean(R.styleable.ExpandableTags_allowOverlap, true);
             allowFill = attr.getBoolean(R.styleable.ExpandableTags_allowFill, true);
+            allowResize = attr.getBoolean(R.styleable.ExpandableTags_allowResize, true);
         } finally {
             attr.recycle();
         }
@@ -143,14 +155,6 @@ public class TagLayout {
         this.hasBorder = hasBorder;
     }
 
-    public boolean allowCollapse() {
-        return allowCollapse;
-    }
-
-    public void setAllowCollapse(boolean allowCollapse) {
-        this.allowCollapse = allowCollapse;
-    }
-
     public boolean allowOverlap() {
         return allowOverlap;
     }
@@ -194,5 +198,21 @@ public class TagLayout {
 
     public void setBorderSize(int borderSize) {
         this.borderSize = borderSize;
+    }
+
+    public boolean isAllowOverlap() {
+        return allowOverlap;
+    }
+
+    public boolean isAllowFill() {
+        return allowFill;
+    }
+
+    public boolean isAllowResize() {
+        return allowResize;
+    }
+
+    public void setAllowResize(boolean allowResize) {
+        this.allowResize = allowResize;
     }
 }

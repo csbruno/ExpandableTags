@@ -18,5 +18,6 @@
         <attr name="allowCollapse" format="boolean" />
         <attr name="allowOverlap" format="boolean"/>
         <attr name="allowFill" format="boolean" />
+        <attr name="allowResize" format="boolean" />
     </declare-styleable>
 </resources>
