@@ -19,15 +19,9 @@ android {
     productFlavors {
     }
 }
-repositories {
-    jcenter()
-    maven {
-        url "https://maven.google.com"
-    }
-}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:27.+'
     implementation project(':library')
 }

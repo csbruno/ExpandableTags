@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+group = 'br.com.csbruno'
+version = '0.1'
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
@@ -15,18 +18,63 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
-    }
+
 }
-repositories {
-    jcenter()
-    maven {
-        url "https://maven.google.com"
-    }
-}
+
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:recyclerview-v7:27.+'
     implementation 'com.android.support:appcompat-v7:27.+'
+
 }
+                                       // Maven Group ID for the artifact
+
+//region Publish to jCenter
+def libGroupId = 'br.com.csbruno'
+def libArtifactId = 'expandable-tags'
+def libVersion = 1
+def libDesc = 'Scrollable tags.'
+def libLicenses = ['Apache-2.0']
+def libVCSUrl = 'https://github.com/csbruno/ExpandableTags.git'
+
+// Generate Source Jar
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+
+// Create the publication with the pom configuration
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            groupId libGroupId
+            artifactId libArtifactId
+            version libVersion
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/library-release.aar")
+        }
+    }
+}
+
+// Bintray config
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    publications = ['MyPublication']
+    pkg {
+        repo = "ExpandableTags"
+        name = "$libGroupId:$libArtifactId"
+        desc = libDesc
+        licenses = libLicenses
+        vcsUrl = libVCSUrl
+        version {
+            name = libVersion
+            vcsTag = libVersion
+            released = new Date()
+        }
+    }
+}
+
